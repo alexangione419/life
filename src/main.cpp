@@ -76,14 +76,13 @@ std::array<std::array<Cell, conf::grid_size.x>, conf::grid_size.y> updateCells(s
 
 int main() {
 	sf::RenderWindow window( sf::VideoMode( { conf::window_size.x, conf::window_size.y } ), "life");
-
     std::array<std::array<Cell, conf::grid_size.x>, conf::grid_size.y> cells; 
     
     for (int y = 0; y < conf::grid_size.y; y++) {
         for (int x = 0; x < conf::grid_size.x; x++) {
             static std::random_device rd;
             static std::mt19937 gen(rd());               
-            static std::bernoulli_distribution dist(0.2);
+            static std::bernoulli_distribution dist(0.5);
 
             cells[y][x] = Cell{{static_cast<float>(x*conf::cell_size), static_cast<float>(y*conf::cell_size)}, dist(gen)};
         }
