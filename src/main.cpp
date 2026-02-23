@@ -98,7 +98,7 @@ int main() {
             for (int x = 0; x < conf::grid_size.x; x++) {
                 sf::RectangleShape rectangle({conf::cell_size, conf::cell_size});
                 if (cells[y][x].alive) {
-                    rectangle.setFillColor(sf::Color::Green);
+                    rectangle.setFillColor(sf::Color(0, 160, 0));
                 } else {
                     rectangle.setFillColor(sf::Color::White);
                 }
