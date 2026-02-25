@@ -2,4 +2,4 @@
 #include <SFML/Window.hpp>
 #include <SFML/Window/Window.hpp>
 
-void processEvents(sf::Window& window);
+void processEvents(sf::Window& window, bool& paused);

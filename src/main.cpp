@@ -100,8 +100,9 @@ int main(int argc, char* argv[]) {
     }
 
 
+    bool paused = false;
 	while ( window.isOpen() ) {
-        processEvents(window);
+        processEvents(window, paused);
 		
 		window.clear();
         
@@ -120,6 +121,13 @@ int main(int argc, char* argv[]) {
 
 		window.display();
 
-        cells = updateCells(cells);
+        if (!paused) {
+            cells = updateCells(cells);
+        }
 	}
 }
+
+
+
+
+
