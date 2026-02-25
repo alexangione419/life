@@ -5,9 +5,12 @@
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/System/Vector2.hpp>
 #include <random>
+#include <iostream>
 
-std::array<std::array<Cell, conf::grid_size.x>, conf::grid_size.y> updateCells(std::array<std::array<Cell, conf::grid_size.x>, conf::grid_size.y>& cells) {
-    std::array<std::array<Cell, conf::grid_size.x>, conf::grid_size.y> next = cells;
+using grid = std::array<std::array<Cell, conf::grid_size.x>, conf::grid_size.y>;
+
+grid updateCells(grid& cells) {
+    grid next = cells;
 
     for (int y = 0; y < conf::grid_size.y; y++) {
         for (int x = 0; x < conf::grid_size.x; x++) {
@@ -42,7 +45,6 @@ std::array<std::array<Cell, conf::grid_size.x>, conf::grid_size.y> updateCells(s
                     if (cells[y+1][x].alive) {
                         livingNeighbors++;
                     }
-                    
                 }
             }
 
@@ -58,7 +60,6 @@ std::array<std::array<Cell, conf::grid_size.x>, conf::grid_size.y> updateCells(s
                 }
             }
 
-
             if (livingNeighbors < 2) {
                 next[y][x].alive = false;
             } else if (livingNeighbors == 3) {
@@ -66,24 +67,34 @@ std::array<std::array<Cell, conf::grid_size.x>, conf::grid_size.y> updateCells(s
             } else if (livingNeighbors >= 4) {
                 next[y][x].alive = false;
             }
-                
         }
     }
-
 
     return next;
 }
 
-int main() {
+int main(int argc, char* argv[]) {
 	sf::RenderWindow window( sf::VideoMode( { conf::window_size.x, conf::window_size.y } ), "life");
-    std::array<std::array<Cell, conf::grid_size.x>, conf::grid_size.y> cells; 
+    grid cells; 
     
+    // get seed
+    unsigned int seed;
+    if (argc >= 2) {
+        unsigned long ul_value = std::stoul(argv[1]); 
+        seed = static_cast<unsigned int>(ul_value);
+
+    } else {
+        static std::random_device rd;
+        seed = rd();
+    }
+
+    static std::mt19937 gen(seed);               
+    static std::bernoulli_distribution dist(0.5);
+    std::cout << "Seed used: " << seed << std::endl;
+
+    // grid initialization
     for (int y = 0; y < conf::grid_size.y; y++) {
         for (int x = 0; x < conf::grid_size.x; x++) {
-            static std::random_device rd;
-            static std::mt19937 gen(rd());               
-            static std::bernoulli_distribution dist(0.5);
-
             cells[y][x] = Cell{{static_cast<float>(x*conf::cell_size), static_cast<float>(y*conf::cell_size)}, dist(gen)};
         }
     }
@@ -98,7 +109,7 @@ int main() {
             for (int x = 0; x < conf::grid_size.x; x++) {
                 sf::RectangleShape rectangle({conf::cell_size, conf::cell_size});
                 if (cells[y][x].alive) {
-                    rectangle.setFillColor(sf::Color(0, 160, 0));
+                    rectangle.setFillColor(sf::Color(0, 190, 0));
                 } else {
                     rectangle.setFillColor(sf::Color::White);
                 }

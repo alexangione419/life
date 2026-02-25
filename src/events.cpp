@@ -1,7 +1,6 @@
 #include "events.hpp"
 
 
-
 void processEvents(sf::Window &window) {
     while ( const std::optional event = window.pollEvent() ) {
 
