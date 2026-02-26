@@ -1,7 +1,7 @@
 #include "events.hpp"
 #include <SFML/Window/Keyboard.hpp>
 
-void processEvents(sf::Window &window, bool& paused, bool& set_new, bool& reset) {
+void processEvents(sf::Window &window, bool& paused, bool& set_new, bool& reset, bool& spawn_pulsar) {
     while ( const std::optional event = window.pollEvent() ) {
 
 	    if ( event->is<sf::Event::Closed>() ) {
@@ -16,6 +16,8 @@ void processEvents(sf::Window &window, bool& paused, bool& set_new, bool& reset)
                 set_new = true;
             } else if ( keyPressed->scancode == sf::Keyboard::Scancode::R ) {
                 reset = true;
+            } else if ( keyPressed->scancode == sf::Keyboard::Scancode::P ) {
+                spawn_pulsar = true;
             }
         }
 

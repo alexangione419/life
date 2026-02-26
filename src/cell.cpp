@@ -80,3 +80,30 @@ cell::grid updateCells(cell::grid& cells) {
 
     return next;
 }
+
+void spawn_pulsar(cell::grid& cells) {
+    int startX = conf::grid_size.x / 2 - 6;  
+    int startY = conf::grid_size.y / 2 - 6; 
+
+    std::vector<std::pair<int,int>> offsets = {
+        {2,0},{3,0},{4,0},{8,0},{9,0},{10,0},
+
+        {0,2},{5,2},{7,2},{12,2},
+        {0,3},{5,3},{7,3},{12,3},
+        {0,4},{5,4},{7,4},{12,4},
+
+        {2,5},{3,5},{4,5},{8,5},{9,5},{10,5},
+
+        {2,7},{3,7},{4,7},{8,7},{9,7},{10,7},
+
+        {0,8},{5,8},{7,8},{12,8},
+        {0,9},{5,9},{7,9},{12,9},
+        {0,10},{5,10},{7,10},{12,10},
+
+        {2,12},{3,12},{4,12},{8,12},{9,12},{10,12}
+    };
+
+    for (auto [dx, dy] : offsets) {
+        cells[startY + dy][startX + dx].alive = true;
+    }
+}

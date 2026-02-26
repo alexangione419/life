@@ -7,12 +7,6 @@
 #include <iostream>
 #include <random>
 
-
-
-
-
-
-
 int main(int argc, char* argv[]) {
 	sf::RenderWindow window( sf::VideoMode( { conf::window_size.x, conf::window_size.y } ), "life");
     
@@ -32,11 +26,18 @@ int main(int argc, char* argv[]) {
     cell::grid cells = init_cells(seed);
     cell::grid initial_grid = cells; // saves the "current" grid for resets
 
+    // this should be a struct of sorts
+    bool s_pulsar = false;
     bool paused = false;
     bool set_new = false;
     bool reset = false;
 	while ( window.isOpen() ) {
-        processEvents(window, paused, set_new, reset);
+        processEvents(window, paused, set_new, reset, s_pulsar);
+
+        if (s_pulsar) {
+            s_pulsar = false;
+            spawn_pulsar(cells);
+        }
 
         if (reset) {
             reset = false;

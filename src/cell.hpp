@@ -16,4 +16,4 @@ using grid = std::array<std::array<Cell, conf::grid_size.x>, conf::grid_size.y>;
 
 cell::grid init_cells(unsigned int seed);
 cell::grid updateCells(cell::grid& cells); 
-
+void spawn_pulsar(cell::grid& cells);
