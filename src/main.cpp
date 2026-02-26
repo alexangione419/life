@@ -73,9 +73,25 @@ grid updateCells(grid& cells) {
     return next;
 }
 
+
+grid init_cells(unsigned int seed) {
+    grid cells; 
+
+    static std::mt19937 gen(seed);               
+    static std::bernoulli_distribution dist(0.5);
+
+    // grid initialization
+    for (int y = 0; y < conf::grid_size.y; y++) {
+        for (int x = 0; x < conf::grid_size.x; x++) {
+            cells[y][x] = Cell{{static_cast<float>(x*conf::cell_size), static_cast<float>(y*conf::cell_size)}, dist(gen)};
+        }
+    }
+
+    return cells;
+}
+
 int main(int argc, char* argv[]) {
 	sf::RenderWindow window( sf::VideoMode( { conf::window_size.x, conf::window_size.y } ), "life");
-    grid cells; 
     
     // get seed
     unsigned int seed;
@@ -87,23 +103,32 @@ int main(int argc, char* argv[]) {
         static std::random_device rd;
         seed = rd();
     }
-
-    static std::mt19937 gen(seed);               
-    static std::bernoulli_distribution dist(0.5);
     std::cout << "Seed used: " << seed << std::endl;
 
-    // grid initialization
-    for (int y = 0; y < conf::grid_size.y; y++) {
-        for (int x = 0; x < conf::grid_size.x; x++) {
-            cells[y][x] = Cell{{static_cast<float>(x*conf::cell_size), static_cast<float>(y*conf::cell_size)}, dist(gen)};
-        }
-    }
 
+    grid cells = init_cells(seed);
+    grid initial_grid = cells; // saves the initial grid for resets
 
     bool paused = false;
+    bool set_new = false;
+    bool reset = false;
 	while ( window.isOpen() ) {
-        processEvents(window, paused);
+        processEvents(window, paused, set_new, reset);
+
+        if (reset) {
+            reset = false;
+            cells = initial_grid;
+        }
+
+        if (set_new) {
+            set_new = false;
+            cells = init_cells(seed);
+        }
 		
+        if (!paused) {
+            cells = updateCells(cells);
+        }
+
 		window.clear();
         
         for (int y = 0; y < conf::grid_size.y; y++) {
@@ -121,9 +146,6 @@ int main(int argc, char* argv[]) {
 
 		window.display();
 
-        if (!paused) {
-            cells = updateCells(cells);
-        }
 	}
 }
 

@@ -1,7 +1,7 @@
 #include "events.hpp"
 #include <SFML/Window/Keyboard.hpp>
 
-void processEvents(sf::Window &window, bool& paused) {
+void processEvents(sf::Window &window, bool& paused, bool& set_new, bool& reset) {
     while ( const std::optional event = window.pollEvent() ) {
 
 	    if ( event->is<sf::Event::Closed>() ) {
@@ -12,6 +12,10 @@ void processEvents(sf::Window &window, bool& paused) {
                 window.close();
             } else if ( keyPressed->scancode == sf::Keyboard::Scancode::Space ) {
                 paused = !paused;
+            } else if ( keyPressed->scancode == sf::Keyboard::Scancode::N ) {
+                set_new = true;
+            } else if ( keyPressed->scancode == sf::Keyboard::Scancode::R ) {
+                reset = true;
             }
         }
 
