@@ -10,7 +10,7 @@ Requires CMake, a C++17 compiler, and SFML.
 mkdir build && cd build
 cmake ..
 make
-./life
+./bin/life
 ```
 
 ## Keyboard Controls 
