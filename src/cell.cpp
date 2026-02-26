@@ -107,3 +107,17 @@ void spawn_pulsar(cell::grid& cells) {
         cells[startY + dy][startX + dx].alive = true;
     }
 }
+
+int count_population(cell::grid cells) {
+    int pop = 0;
+
+    for (int y = 0; y < conf::grid_size.y; y++) {
+        for (int x = 0; x < conf::grid_size.x; x++) {
+            if (cells[y][x].alive) {
+                pop += 1;
+            }
+        }
+    }
+
+    return pop;
+}

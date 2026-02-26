@@ -16,6 +16,8 @@ add_executable(${PROJECT_NAME} src/main.cpp src/events.cpp src/cell.cpp)
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_17)
 target_link_libraries(${PROJECT_NAME} PRIVATE SFML::Graphics)
 
+file(COPY assets DESTINATION ${CMAKE_BINARY_DIR})
+
 set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${PROJECT_NAME})
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)

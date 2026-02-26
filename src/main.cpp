@@ -3,6 +3,7 @@
 #include "events.hpp"
 #include <SFML/Graphics.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
+#include <SFML/Graphics/Text.hpp>
 #include <SFML/System/Vector2.hpp>
 #include <iostream>
 #include <random>
@@ -68,6 +69,56 @@ int main(int argc, char* argv[]) {
                 window.draw(rectangle);
             }
         }
+
+
+        sf::RectangleShape legend({300, 150});
+        legend.setFillColor(sf::Color(111, 111, 111));
+        legend.setPosition({conf::window_size.x-300, 0});
+        legend.setOutlineThickness(5.f);
+        legend.setOutlineColor(sf::Color(150, 150, 150));
+
+
+        sf::Font font;
+        if (!font.openFromFile("./assets/fonts/0xProtoNerdFont-Regular.ttf")) {
+            return -1; 
+        }
+
+        sf::Text title(font);
+        title.setString("Alex's Conway's Game of Life");
+        title.setCharacterSize(15);
+        title.setFillColor(sf::Color::White);
+
+        sf::FloatRect bounds = title.getLocalBounds();
+        title.setOrigin({
+            bounds.position.x + bounds.size.x / 2.f,
+            bounds.position.y + bounds.size.y / 2.f
+        });
+
+        title.setPosition({
+            legend.getPosition().x + legend.getSize().x / 2.f,
+            legend.getPosition().y + legend.getSize().y / 4.f
+        });
+
+
+        sf::Text population(font);
+        population.setCharacterSize(15);
+        int pop = count_population(cells);
+        population.setString("Population: " + std::to_string(pop));
+        population.setOrigin({
+            bounds.position.x + bounds.size.x / 2.f,
+            bounds.position.y + bounds.size.y / 2.f
+        });
+
+        population.setPosition({
+            legend.getPosition().x + legend.getSize().x / 2.f,
+            legend.getPosition().y + legend.getSize().y / 2.f
+        });
+
+
+
+        window.draw(legend);
+        window.draw(population);
+        window.draw(title);
 
 		window.display();
 
